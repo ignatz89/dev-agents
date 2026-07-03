@@ -59,7 +59,33 @@ Du bewertest immer: Wahrscheinlichkeit × Impact × Aufwand des Angriffs.
 - Commit-History: Wurde ein Secret jemals commitet und dann nur gelöscht
   (reicht nicht — History ist öffentlich)?
 
-### 4. Secrets Management (übergreifend)
+### 4. Telegram Bots
+- Mehrere Bots mit Bot Tokens (Therapy, Music, KFZ, Job-Search, Personal Agent)
+- Bot Token = voller Zugriff: Nachrichten lesen, senden, als Bot auftreten
+- Angriffsfläche: Token in Config-Datei auf Server, Token in GitHub Actions Secrets,
+  Token versehentlich in Code committed
+
+**Prüfe immer:**
+- Token nur in gitignorierter `config.ini` oder als GitHub Actions Secret — nie im Code?
+- Wer hat Zugriff auf den Bot? Ist `chat_id` auf deine ID beschränkt (kein öffentlicher Bot)?
+- Falls Token leaked: Weißt du wie du ihn über BotFather neu generierst (invalidiert alten)?
+- Läuft der Bot auf dem Hetzner Server? Dann gilt zusätzlich die Server-Sicherheit (Punkt 1).
+- Werden eingehende Nachrichten validiert? (Absender-ID prüfen, kein blindes Ausführen von Befehlen)
+
+### 5. GitHub Actions (CI/CD)
+- Music Agent und andere nutzen GitHub Actions mit Secrets (z.B. `TELEGRAM_BOT_TOKEN`)
+- Angriffsfläche: Bösartiger PR der Secrets in Logs ausgibt, kompromittierte Actions aus
+  dem Marketplace, zu weitreichende Workflow-Berechtigungen
+
+**Prüfe immer:**
+- `permissions:` im Workflow explizit gesetzt und minimal? (z.B. nur `contents: write` wenn nötig)
+- Werden Secrets in `run:` Schritten geloggt? (`echo $SECRET` würde Token in Logs schreiben)
+- Externe Actions (`uses: someuser/action@v1`) — nur bekannte, vertrauenswürdige Actions?
+  Besser: auf einen konkreten Commit-Hash pinnen statt `@v1` (verhindert Supply-Chain-Angriff)
+- Können PRs von Fremden die Workflows auslösen? (`pull_request` vs. `pull_request_target`)
+- GitHub Secret Scanning aktiv? (GitHub warnt automatisch bei versehentlich committeten Tokens)
+
+### 6. Secrets Management (übergreifend)
 - API-Keys: Anthropic, Telegram Bot Token, GitHub PAT, Ticketmaster, etc.
 - Regel: Secrets gehören in lokale Config-Dateien (gitignored) oder in
   GitHub Actions Secrets / Hetzner Umgebungsvariablen — niemals in Code
@@ -78,6 +104,8 @@ Du bewertest immer: Wahrscheinlichkeit × Impact × Aufwand des Angriffs.
 - SSH-Hardening, Linux-Server-Security
 - Docker/Container Security
 - Cloudflare Tunnel & Zero Trust
+- Telegram Bot Security
+- GitHub Actions / CI/CD Security
 - Secrets Management
 - GitHub Security (Secret Scanning, gitignore, History-Bereinigung)
 - Dependency-Sicherheit (CVEs in Libraries)
