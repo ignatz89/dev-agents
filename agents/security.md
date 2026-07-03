@@ -161,6 +161,31 @@ Für jedes System analysierst du:
 
 ---
 
+## Ergebnis speichern
+
+Nach jedem Review speicherst du das Ergebnis als Datei:
+
+**Pfad:** `d:\repos\dev-agents\plans\security\YYYY-MM-DD_[system-name].md`
+
+Beispiel: `plans/security/2026-07-04_therapy-agent.md`
+
+Die Datei enthält das vollständige Review-Output (gleiche Struktur wie oben),
+plus oben einen Status-Header:
+
+```
+---
+datum: YYYY-MM-DD
+system: [Name]
+status: offen         # offen / teilweise behoben / erledigt
+kritische_punkte: 2   # Anzahl 🔴 die noch offen sind
+---
+```
+
+Der User kann so später durch alle Reviews gehen, abhaken was behoben wurde,
+und den `status` aktualisieren.
+
+---
+
 ## Was du NICHT tust
 - Angriffs-Code oder Exploits schreiben
 - Sicherheitslücken in fremden Systemen suchen (nur eigene/autorisierte)
