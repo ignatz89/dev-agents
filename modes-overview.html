@@ -1,0 +1,223 @@
+<style>
+  :root {
+    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+
+    --bg: #EEF1F6; --grid: #E1E6EF; --surface: #FFFFFF; --surface-2: #F3F5F9;
+    --border: #DBE1EB; --text: #18202E; --muted: #5A6474; --eyebrow: #8791A2;
+    --ok: #2F8F6F; --no: #C0574F;
+    --architect: #3B5BD0; --implementer: #9C5800; --reviewer: #B23360; --security: #0F7A69;
+    --maxw: 1080px; --radius: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0D131B; --grid: #15202C; --surface: #141C27; --surface-2: #1A2431;
+      --border: #28323F; --text: #E7ECF3; --muted: #97A2B2; --eyebrow: #6B7788;
+      --ok: #4FBF97; --no: #F0857E;
+      --architect: #8DA8FF; --implementer: #F2B24C; --reviewer: #FF83A6; --security: #43D2BA;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0D131B; --grid: #15202C; --surface: #141C27; --surface-2: #1A2431;
+    --border: #28323F; --text: #E7ECF3; --muted: #97A2B2; --eyebrow: #6B7788;
+    --ok: #4FBF97; --no: #F0857E;
+    --architect: #8DA8FF; --implementer: #F2B24C; --reviewer: #FF83A6; --security: #43D2BA;
+  }
+  :root[data-theme="light"] {
+    --bg: #EEF1F6; --grid: #E1E6EF; --surface: #FFFFFF; --surface-2: #F3F5F9;
+    --border: #DBE1EB; --text: #18202E; --muted: #5A6474; --eyebrow: #8791A2;
+    --ok: #2F8F6F; --no: #C0574F;
+    --architect: #3B5BD0; --implementer: #9C5800; --reviewer: #B23360; --security: #0F7A69;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: var(--font-sans); color: var(--text);
+    background-color: var(--bg);
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 34px 34px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: clamp(1.5rem,4vw,3.5rem) clamp(1rem,4vw,2rem) 4rem; }
+  .eyebrow { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--eyebrow); margin: 0; }
+
+  header.hero { margin-bottom: 1.75rem; }
+  .hero h1 { font-size: clamp(2rem,5vw,3.1rem); line-height: 1.06; letter-spacing: -0.02em; text-wrap: balance; margin: 0.5rem 0 0.75rem; font-weight: 680; }
+  .hero p.lede { max-width: 62ch; color: var(--muted); font-size: 1.05rem; margin: 0; }
+
+  .callout {
+    display: flex; gap: 0.8rem; align-items: flex-start;
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--architect); border-radius: 10px;
+    padding: 0.9rem 1.1rem; margin: 1.75rem 0 2.5rem; font-size: 0.95rem;
+  }
+  .callout .ico { flex: 0 0 auto; color: var(--architect); }
+  .callout strong { color: var(--text); }
+  .callout span.t { color: var(--muted); }
+
+  .mode { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.4rem 1.4rem 1.5rem; margin-bottom: 1.25rem; }
+  .mode-head { display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap; margin-bottom: 0.25rem; }
+  .mode-num { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--eyebrow); }
+  .mode h2 { font-size: 1.3rem; margin: 0; letter-spacing: -0.01em; font-weight: 660; }
+  .mode .wofur { color: var(--muted); font-size: 0.95rem; margin: 0.15rem 0 1.1rem; }
+
+  /* flow */
+  .flow-scroll { overflow-x: auto; padding: 0.35rem 0 0.6rem; }
+  .flow { display: flex; align-items: center; gap: 0.55rem; min-width: max-content; }
+  .fnode {
+    --c: var(--muted);
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 0.8rem; border-radius: 9px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    font-size: 0.9rem; font-weight: 560; white-space: nowrap;
+  }
+  .fnode.agent { border-color: color-mix(in srgb, var(--c) 34%, var(--border)); }
+  .fnode .d { width: 10px; height: 10px; border-radius: 50%; background: var(--c); flex: 0 0 auto; }
+  .fnode .sub { font-family: var(--font-mono); font-size: 0.66rem; color: var(--muted); font-weight: 400; }
+  .fnode.arch { --c: var(--architect); }
+  .fnode.impl { --c: var(--implementer); }
+  .fnode.rev  { --c: var(--reviewer); }
+  .fnode.sec  { --c: var(--security); }
+
+  .farrow { color: var(--eyebrow); flex: 0 0 auto; display: grid; place-items: center; }
+  .farrow svg { width: 20px; height: 20px; }
+  .farrow.dash { opacity: 0.6; }
+
+  .loopwrap { display: inline-flex; flex-direction: column; align-items: center; gap: 0.4rem; }
+  .loop {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.55rem 0.7rem; border-radius: 12px;
+    border: 1.5px dashed color-mix(in srgb, var(--reviewer) 45%, var(--border));
+    background: color-mix(in srgb, var(--reviewer) 6%, transparent);
+  }
+  .swap { color: var(--muted); font-size: 1.05rem; }
+  .loopcap { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.02em; color: var(--muted); }
+
+  .term { display: flex; gap: 0.55rem; align-items: flex-start; margin-top: 1.1rem; font-size: 0.9rem; color: var(--muted); }
+  .term .k { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--eyebrow); flex: 0 0 auto; padding-top: 0.15rem; }
+  .term b { color: var(--text); font-weight: 600; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 0.9rem 1.4rem; margin-top: 2rem; padding: 1rem 1.2rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+  .legend .li { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
+  .legend .d { width: 11px; height: 11px; border-radius: 50%; }
+
+  .pagefoot { margin-top: 2.25rem; padding-top: 1.2rem; border-top: 1px solid var(--border); font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.04em; color: var(--eyebrow); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .mode, .callout { animation: rise 0.5s ease both; }
+    .mode:nth-of-type(2) { animation-delay: 0.05s; }
+    .mode:nth-of-type(3) { animation-delay: 0.1s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  }
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">dev-agents · Setups</p>
+    <h1>Drei Modi, ein Startpunkt</h1>
+    <p class="lede">Du wählst den Modus einmal am Anfang und nennst Ziel + Dateien. Danach läuft der Ablauf autonom — keine Zwischenfragen. Am Ende: eine Zusammenfassung.</p>
+  </header>
+
+  <div class="callout">
+    <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3"/><path d="M12 18v3"/><path d="M5.6 5.6l2.1 2.1"/><path d="M16.3 16.3l2.1 2.1"/><path d="M3 12h3"/><path d="M18 12h3"/><circle cx="12" cy="12" r="3.2"/></svg></span>
+    <div><strong>Autonomie-Regel.</strong> <span class="t">Am Anfang entscheidest du (Modus, Ziel, Dateien). Während der Iteration wirst du nicht gefragt — die Agenten terminieren nach festen Regeln. Nur harte Blocker landen in der finalen SUMMARY.</span></div>
+  </div>
+
+  <!-- MODE 1 -->
+  <section class="mode">
+    <div class="mode-head">
+      <span class="mode-num">Modus 1</span>
+      <h2>Sparring</h2>
+    </div>
+    <p class="wofur">Implementer ⇄ Reviewer im Loop, bis es passt. Für klar umrissene Änderungen, kein neuer Entwurf nötig.</p>
+
+    <div class="flow-scroll">
+      <div class="flow">
+        <span class="fnode"><span class="d"></span>Human</span>
+        <span class="farrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="m13 6 6 6-6 6"/></svg></span>
+        <span class="loopwrap">
+          <span class="loop">
+            <span class="fnode agent impl"><span class="d"></span>Implementer <span class="sub">sonnet-4-6</span></span>
+            <span class="swap" aria-hidden="true">⇄</span>
+            <span class="fnode agent rev"><span class="d"></span>Reviewer <span class="sub">opus-4-8</span></span>
+          </span>
+          <span class="loopcap">⟲ bis kein 🔴/🟡 · max 4 Runden</span>
+        </span>
+        <span class="farrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="m13 6 6 6-6 6"/></svg></span>
+        <span class="fnode"><span class="d"></span>SUMMARY</span>
+      </div>
+    </div>
+
+    <div class="term"><span class="k">Ende</span><span>Konvergiert, sobald <b>kein 🔴 und kein bestandenes 🟡</b> offen ist. Nach <b>4 Runden</b> Stopp + SUMMARY. <code style="font-family:var(--font-mono);font-size:0.85em">won't-fix</code>-Dissens wird gesammelt, nicht mitten im Loop gefragt.</span></div>
+  </section>
+
+  <!-- MODE 2 -->
+  <section class="mode">
+    <div class="mode-head">
+      <span class="mode-num">Modus 2</span>
+      <h2>Full Build</h2>
+    </div>
+    <p class="wofur">Von der Idee bis fertig. Für neue, riskante oder internetseitige Projekte.</p>
+
+    <div class="flow-scroll">
+      <div class="flow">
+        <span class="fnode agent arch"><span class="d"></span>Architect <span class="sub">opus-4-8</span></span>
+        <span class="farrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="m13 6 6 6-6 6"/></svg></span>
+        <span class="loopwrap">
+          <span class="loop">
+            <span class="fnode agent impl"><span class="d"></span>Implementer</span>
+            <span class="swap" aria-hidden="true">⇄</span>
+            <span class="fnode agent rev"><span class="d"></span>Reviewer</span>
+          </span>
+          <span class="loopcap">⟲ bis konvergiert · max 4 Runden</span>
+        </span>
+        <span class="farrow dash" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 3"><path d="M5 12h13"/><path d="m13 6 6 6-6 6"/></svg></span>
+        <span class="fnode agent sec"><span class="d"></span>Security <span class="sub">bedingt · fable-5</span></span>
+        <span class="farrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="m13 6 6 6-6 6"/></svg></span>
+        <span class="fnode"><span class="d"></span>SUMMARY</span>
+      </div>
+    </div>
+
+    <div class="term"><span class="k">Ende</span><span>Loop wie Modus 1. <b>Security nur</b> bei Server / Internet / Secrets / öffentlichem Repo — mit Prüfbefehl + Status je Maßnahme. Offene 🔴 blockieren den Push und stehen in der SUMMARY.</span></div>
+  </section>
+
+  <!-- MODE 3 -->
+  <section class="mode">
+    <div class="mode-head">
+      <span class="mode-num">Modus 3</span>
+      <h2>Refactor-Pass</h2>
+    </div>
+    <p class="wofur">Bestehendes Projekt ganzheitlich verbessern. Architect blickt aufs Ganze, dann Umsetzung + Loop.</p>
+
+    <div class="flow-scroll">
+      <div class="flow">
+        <span class="fnode agent arch"><span class="d"></span>Architect <span class="sub">Gesamtblick</span></span>
+        <span class="farrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="m13 6 6 6-6 6"/></svg></span>
+        <span class="loopwrap">
+          <span class="loop">
+            <span class="fnode agent impl"><span class="d"></span>Implementer</span>
+            <span class="swap" aria-hidden="true">⇄</span>
+            <span class="fnode agent rev"><span class="d"></span>Reviewer</span>
+          </span>
+          <span class="loopcap">⟲ bis konvergiert · max 4 Runden</span>
+        </span>
+        <span class="farrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13"/><path d="m13 6 6 6-6 6"/></svg></span>
+        <span class="fnode"><span class="d"></span>SUMMARY</span>
+      </div>
+    </div>
+
+    <div class="term"><span class="k">Ende</span><span>Architect schreibt einen <b>Verbesserungs-Plan</b> (kein Code) über das ganze Projekt; danach Umsetzung und Reviewer-Loop bis konvergiert.</span></div>
+  </section>
+
+  <div class="legend" aria-label="Farb-Zuordnung der Agenten">
+    <span class="li"><span class="d" style="background:var(--architect)"></span>Architect</span>
+    <span class="li"><span class="d" style="background:var(--implementer)"></span>Implementer</span>
+    <span class="li"><span class="d" style="background:var(--reviewer)"></span>Reviewer</span>
+    <span class="li"><span class="d" style="background:var(--security)"></span>Security</span>
+    <span class="li"><span class="d" style="background:var(--muted)"></span>Human / SUMMARY</span>
+  </div>
+
+  <div class="pagefoot">
+    <span>MODES.md · COMMUNICATION.md</span>
+    <span>Sparring · Full Build · Refactor-Pass</span>
+  </div>
+</div>
