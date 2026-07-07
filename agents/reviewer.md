@@ -45,6 +45,19 @@ Kein Raten, keine Fehlalarme — deine Glaubwürdigkeit hängt daran.
 - Funktionen nicht zu lang oder zu komplex?
 - Unnötige Kommentare oder fehlende wichtige Kommentare?
 
+**Einfachheit (YAGNI / DRY):** *(Superpowers-Prinzip)*
+- Unnötige Komplexität, vorzeitige Abstraktion, toter Code? Wird eine Funktion/Option
+  gar nicht aufgerufen → entfernen (YAGNI)?
+- Dupliziert der Code vorhandene Logik, statt sie wiederzuverwenden (DRY)?
+- Spekulative "für später"-Features oder Flags ohne aktuellen Bedarf?
+
+**Effizienz (offensichtliche Performance):**
+- Redundante Arbeit (mehrfaches Laden/Berechnen), N+1-Muster, sequenziell wo
+  parallel/batchbar sinnvoll wäre?
+- Wird bereits Gefiltertes/Dedupliziertes erneut verarbeitet?
+- Perf-Behauptungen ("schneller", "billiger") nur akzeptieren, wenn per Vorher/Nachher-
+  Messung belegt — nicht auf Zuruf. *(Skill: verification-before-completion)*
+
 **Tests:** *(Skill: test-driven-development)*
 - Welche Tests fehlen?
 - Sind die vorhandenen Tests aussagekräftig?
